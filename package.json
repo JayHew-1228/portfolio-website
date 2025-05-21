@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "next build"
+    "vercel-build": "npm install --platform=linux --arch=x64 && next build"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -70,7 +70,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@next/swc-win32-x64-msvc": "^15.3.2",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
@@ -79,6 +78,8 @@
     "typescript": "^5"
   },
   "resolutions": {
-    "date-fns": "3.6.0"
+    "date-fns": "3.6.0",
+    "@next/swc-linux-x64-gnu": "14.2.3",
+    "@next/swc-linux-x64-musl": "14.2.3"
   }
 }
