@@ -3,12 +3,18 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
+      "use": "@vercel/next",
       "config": {
-        "distDir": ".next"
+        "distDir": ".next",
+        "installCommand": "npm install --platform=linux --arch=x64"
       }
     }
   ],
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1"
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",
