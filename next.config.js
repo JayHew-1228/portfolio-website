@@ -1,26 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Use static export for Vercel
+  output: 'export',
+  
+  // Disable image optimization for static export
   images: {
-    unoptimized: true, // Disable Image Optimization API for static export
+    unoptimized: true,
   },
-  // Force the use of webpack 5 (which is the default in newer Next.js versions)
-  webpack5: true,
-  // Don't include the platform-specific SWC binary
+  
+  // Enable React strict mode
+  reactStrictMode: true,
+  
+  // Enable SWC minification
+  swcMinify: true,
+  
+  // Add base path if your site is served from a subdirectory
+  // basePath: '',
+  
+  // Add trailing slash for static export
+  trailingSlash: true,
+  
+  // Optional: Enable the experimental app directory
   experimental: {
-    forceSwcTransforms: false,
+    appDir: true,
   },
-  // Ensure we're using the correct SWC binary
-  swcMinify: false, // Disable SWC minifier as it might be causing the issue
-  // Add other configurations here if needed
-}
-
-// Only include SWC in development
-if (process.env.NODE_ENV === 'development') {
-  nextConfig.experimental = {
-    ...nextConfig.experimental,
-    swcMinify: true,
-  };
 }
 
 module.exports = nextConfig
