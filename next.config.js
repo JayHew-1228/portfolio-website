@@ -1,19 +1,12 @@
 /** @type {import('next').NextConfig} */
-const path = require('path');
-
-const isProd = process.env.NODE_ENV === 'production';
-
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove static export for Vercel deployment
-  // output: 'export',
+  // React strict mode
+  reactStrictMode: true,
   
-  // Base paths
-  basePath: '',
-  
-  // Image optimization
+  // Image domains
   images: {
     domains: ['portfolio-website-murex-theta.vercel.app'],
+    unoptimized: true,
   },
   
   // TypeScript and ESLint config
@@ -24,29 +17,11 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   
-  // Webpack configuration
-  webpack: (config) => {
-    // Add path aliases
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, './'),
-    };
-    return config;
-  },
-  
-  // Enable React strict mode
-  reactStrictMode: true,
-  
-  // Disable powered by header
-  poweredByHeader: false,
-  
-  // Disable source maps in production
-  productionBrowserSourceMaps: false,
-  
-  // Ensure app directory is enabled
+  // Experimental features
   experimental: {
     appDir: true,
-  },
+    serverActions: true,
+  }
 };
 
 module.exports = nextConfig;
