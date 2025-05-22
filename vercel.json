@@ -11,12 +11,16 @@
   ],
   "routes": [
     {
-      "src": "/_next/static/(.*)",
+      "src": "^/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "^/_next/static/(.*)",
       "dest": "/_next/static/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "^/(.*)",
+      "dest": "/$1"
     }
   ]
 }

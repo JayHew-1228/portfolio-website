@@ -1,16 +1,21 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   // Use static export for Vercel
   output: 'export',
+  distDir: 'out',
   
-  // Disable basePath and assetPrefix for root domain
-  basePath: '',
-  assetPrefix: '',
+  // Base paths
+  basePath: isProd ? '' : '',
+  assetPrefix: isProd ? '' : '',
   
   // Image optimization
   images: {
+    loader: 'imgix',
+    path: '',
     unoptimized: true,
     domains: ['images.unsplash.com'],
   },

@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export -o out",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "vercel-build": "npm install --include=dev && npm run type-check && npm run build"
+    "vercel-build": "npm install --include=dev && npm run type-check && next build && next export"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
