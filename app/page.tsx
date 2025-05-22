@@ -200,7 +200,7 @@ export default function Home() {
           scrollY > 50 ? "bg-[#050A1B]/80 backdrop-blur-md" : "bg-transparent",
         )}
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[85rem] w-full mx-auto">
           <div className="flex justify-between items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}

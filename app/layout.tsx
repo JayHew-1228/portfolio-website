@@ -1,18 +1,13 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '../components/theme-provider';
+import { ThemeProvider } from '@/components/theme-provider';
 
-// Preload the font
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter'
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Creative Portfolio | Graphic Designer & Digital Artist',
   description: 'Portfolio showcasing graphic design, illustration, and digital art work',
-  viewport: 'width=device-width, initial-scale=1',
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -21,17 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body className="min-h-screen bg-black text-white">
+    <html lang='en' suppressHydrationWarning className='scroll-smooth'>
+      <body className={`${inter.className} min-h-screen bg-background`}>
         <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
+          attribute='class'
+          defaultTheme='dark'
           enableSystem
           disableTransitionOnChange
         >
