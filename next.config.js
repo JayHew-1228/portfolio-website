@@ -10,11 +10,12 @@ const nextConfig = {
   
   // Base paths - empty for root domain
   basePath: '',
-  assetPrefix: '',
+  assetPrefix: isProd ? 'https://portfolio-website-murex-theta.vercel.app' : '',
   
   // Image optimization
   images: {
     unoptimized: true, // Required for static export
+    domains: ['portfolio-website-murex-theta.vercel.app'],
   },
   
   // TypeScript and ESLint config
@@ -32,6 +33,8 @@ const nextConfig = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, './'),
     };
+    
+    // Important: return the modified config
     return config;
   },
   
@@ -46,6 +49,11 @@ const nextConfig = {
   
   // Disable source maps in production
   productionBrowserSourceMaps: false,
+  
+  // Ensure static export works with app router
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
