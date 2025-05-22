@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsc --noEmit && next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm install --platform=linux --arch=x64 && next build"
+    "vercel-build": "npm install --include=dev && npm run build"
   },
   "engines": {
     "node": ">=16.0.0"
