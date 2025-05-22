@@ -1,20 +1,15 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
-// Check if running in production
-const isProd = process.env.NODE_ENV === 'production';
-const basePath = isProd ? '/portfolio-website' : '';
-
 const nextConfig = {
-  // Disable the static export since we're using Vercel
-  output: 'standalone',
+  // Use static export for Vercel
+  output: 'export',
   
-  // Base path for assets
-  basePath: isProd ? basePath : undefined,
-  assetPrefix: isProd ? basePath : undefined,
+  // Base path for GitHub Pages
+  basePath: process.env.NODE_ENV === 'production' ? '/portfolio-website' : '',
   
-  // Enable React strict mode
-  reactStrictMode: true,
+  // Asset prefix for CDN
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/portfolio-website/' : '',
   
   // Image optimization
   images: {
@@ -31,67 +26,20 @@ const nextConfig = {
   },
   
   // Webpack configuration
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     // Add path aliases
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, './'),
     };
-    
-    // Fixes npm packages that depend on `fs` module
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        path: false,
-      };
-    }
-    
     return config;
   },
   
-  // Experimental features
-  experimental: {
-    // Enable React compiler
-    reactCompiler: true,
-    // Enable SWC minification
-    swcMinify: true,
-  },
-  
-  // Enable source maps in production
-  productionBrowserSourceMaps: true,
+  // Enable React strict mode
+  reactStrictMode: true,
   
   // Disable powered by header
   poweredByHeader: false,
-  
-  // Enable compression in production
-  compress: isProd,
-  
-  // Configure page extensions
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  
-  // Configure headers
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-        ],
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig;
