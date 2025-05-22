@@ -6,11 +6,10 @@
       "use": "@vercel/next"
     }
   ],
-  "installCommand": "npm install --platform=linux --arch=x64",
-  "buildCommand": "npm run build",
   "build": {
     "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_ENV": "production"
     }
   },
   "routes": [
@@ -18,5 +17,8 @@
       "src": "/(.*)",
       "dest": "/"
     }
+  ],
+  "rewrites": [
+    { "source": "/:path*", "destination": "/" }
   ]
 }
