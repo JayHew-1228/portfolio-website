@@ -1,25 +1,28 @@
-import React from 'react';
-import { motion as framerMotion } from 'framer-motion';
+import * as React from 'react';
+import type {} from 'react'; // This imports the JSX namespace
+import { motion as framerMotion, HTMLMotionProps, ForwardRefComponent } from 'framer-motion';
+
+type MotionComponentProps = HTMLMotionProps<'div'> & {
+  [key: string]: any;
+  as?: keyof JSX.IntrinsicElements;
+};
 
 // Create a simpler motion component that works with TypeScript
-export const motion = new Proxy({}, {
+export const motion = new Proxy({} as typeof framerMotion, {
   get: (_, element: string) => {
     const Component = (framerMotion as any)[element] || framerMotion.div;
     
-    const MotionComponent = (props: any) => {
-      const Comp: React.ComponentType<any> = Component as any;
-      return React.createElement(Comp, props);
-    };
+    const MotionComponent = React.forwardRef<HTMLElement, MotionComponentProps>((props, ref) => {
+      const Comp = Component as React.ComponentType<MotionComponentProps>;
+      return React.createElement(Comp, { ...props, ref });
+    });
     
     // Add display name for better debugging
-    Object.defineProperty(MotionComponent, 'displayName', {
-      value: `motion.${element}`,
-      configurable: true
-    });
+    MotionComponent.displayName = `motion.${element}`;
     
     return MotionComponent;
   }
-}) as typeof framerMotion;
+}) as unknown as typeof framerMotion;
 
 // Manually define commonly used components for better type safety
 export const m = {
