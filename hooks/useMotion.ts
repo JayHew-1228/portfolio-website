@@ -1,10 +1,10 @@
 import * as React from 'react';
-import type {} from 'react'; // This imports the JSX namespace
-import { motion as framerMotion, HTMLMotionProps, ForwardRefComponent } from 'framer-motion';
+import { motion as framerMotion, HTMLMotionProps } from 'framer-motion';
 
-type MotionComponentProps = HTMLMotionProps<'div'> & {
+type MotionComponentProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
   [key: string]: any;
   as?: keyof JSX.IntrinsicElements;
+  ref?: React.Ref<HTMLElement>;
 };
 
 // Create a simpler motion component that works with TypeScript
