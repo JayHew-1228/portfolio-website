@@ -5,8 +5,8 @@ const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable static export
-  output: 'export',
+  // Disable static export
+  // output: 'export', // Commented out for Vercel deployment
   
   // Base paths
   basePath: '',
@@ -14,7 +14,7 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    unoptimized: true, // Required for static export
+    domains: ['portfolio-website-murex-theta.vercel.app'],
   },
   
   // TypeScript and ESLint config
@@ -41,13 +41,10 @@ const nextConfig = {
   // Disable powered by header
   poweredByHeader: false,
   
-  // Add trailing slash for static export
-  trailingSlash: true,
-  
   // Disable source maps in production
   productionBrowserSourceMaps: false,
   
-  // Ensure static export works with app router
+  // Ensure app directory is enabled
   experimental: {
     appDir: true,
   },
