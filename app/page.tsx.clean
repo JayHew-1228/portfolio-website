@@ -1,0 +1,203 @@
+"use client"
+
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { Button } from "../components/ui/button";
+import {
+  ExternalLink,
+  Menu,
+  X,
+  Brush,
+  Code,
+  Laptop,
+  Mail,
+  Palette,
+  FileImage,
+  Sparkles,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
+import { cn } from "../lib/utils";
+
+// Import components
+import SkillsSection from '../components/SkillsSection';
+import { SkillCard } from '../components/SkillCard';
+
+export default function Home() {
+  const [activeSection, setActiveSection] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const skillsSectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(skillsSectionRef as React.RefObject<HTMLElement>, {
+    once: true,
+    amount: 0.5
+  } as const);
+
+  // Track scroll position and update active section
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+
+      // Update active section based on scroll position
+      const sections = ["home", "about", "skills", "education", "portfolio", "contact"];
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const navItems = [
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "skills", label: "Skills" },
+    { id: "education", label: "Education" },
+    { id: "portfolio", label: "Work" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  // Skills data
+  const skills = [
+    {
+      id: 1,
+      icon: <Palette className="h-12 w-12" />,
+      name: "Graphic Design",
+      category: "Visual Communication",
+      description: "Crafting compelling visual concepts using Photoshop, Illustrator, and other design tools to create engaging and memorable designs.",
+      color: "from-[#D81B60] to-[#C2185B]",
+      bgColor: "bg-gradient-to-br from-[#D81B60]/90 to-[#C2185B]",
+      mockupImage: "/placeholder.svg?height=600&width=300",
+      mockupContent: "Design Projects",
+      proficiency: 85
+    },
+    // ... other skill items
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#050A1B] text-white overflow-hidden">
+      {/* Background gradient orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-300px] right-[-300px] w-[800px] h-[800px] rounded-full bg-[#1A4DB3] opacity-20 blur-[150px]" />
+        <div className="absolute bottom-[-300px] left-[-300px] w-[800px] h-[800px] rounded-full bg-[#1A4DB3] opacity-20 blur-[150px]" />
+        <div className="absolute top-[30%] left-[10%] w-[400px] h-[400px] rounded-full bg-[#1A4DB3] opacity-10 blur-[100px]" />
+      </div>
+
+      {/* Header */}
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-40 px-6 py-4 transition-all duration-300",
+          scrollY > 50 ? "bg-[#050A1B]/80 backdrop-blur-md" : "bg-transparent",
+        )}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center"
+            >
+              <span className="text-xl font-bold bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
+                Jay Hew
+              </span>
+            </motion.div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:block">
+              <ul className="flex space-x-8">
+                {navItems.map((item) => (
+                  <motion.li
+                    key={item.id}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 * navItems.indexOf(item) }}
+                  >
+                    <Link
+                      href={`#${item.id}`}
+                      className={cn(
+                        "text-sm font-medium relative px-1 py-2 transition-colors",
+                        activeSection === item.id ? "text-white" : "text-gray-400 hover:text-white",
+                      )}
+                      onClick={() => setActiveSection(item.id)}
+                    >
+                      {item.label}
+                      {activeSection === item.id && (
+                        <motion.div
+                          layoutId="activeSection"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      )}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="md:hidden z-50 relative"
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+            </motion.button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Navigation */}
+      <motion.nav
+        className={cn(
+          "fixed inset-0 z-40 bg-[#050A1B]/95 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-300 md:hidden",
+          menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        )}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: menuOpen ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <ul className="space-y-8 text-center">
+          {navItems.map((item) => (
+            <motion.li
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={menuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, delay: 0.05 * navItems.indexOf(item) }}
+            >
+              <Link
+                href={`#${item.id}`}
+                className={cn(
+                  "text-2xl font-medium transition-colors",
+                  activeSection === item.id
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white"
+                )}
+                onClick={() => {
+                  setActiveSection(item.id);
+                  setMenuOpen(false);
+                }}
+              >
+                {item.label}
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.nav>

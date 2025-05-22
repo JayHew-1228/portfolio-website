@@ -1,13 +1,55 @@
 declare module 'framer-motion' {
   import * as React from 'react';
 
-  export interface MotionProps {
+  // Motion Value Types
+  export interface MotionValue<T> {
+    get(): T;
+    set(value: T, render?: boolean): void;
+    onChange(subscription: (value: T) => void): () => void;
+    start(animation: AnimationPlaybackControls): void;
+    stop(): void;
+    isAnimating(): boolean;
+    getVelocity(): number;
+  }
+
+  // Spring Options
+  export interface SpringOptions {
+    stiffness?: number;
+    damping?: number;
+    mass?: number;
+    velocity?: number;
+    restDelta?: number;
+    restSpeed?: number;
+  }
+
+  // Scroll Options
+  export interface ScrollOptions {
+    container?: HTMLElement | null;
+    target?: Element | null;
+    offset?: string[];
+    axis?: 'x' | 'y';
+    layoutEffect?: boolean;
+    smooth?: number;
+  }
+
+  // Viewport Options
+  export interface ViewportOptions {
+    root?: React.RefObject<HTMLElement>;
+    margin?: string;
+    amount?: 'some' | 'all' | number;
+    once?: boolean;
+  }
+
+  // Motion Props
+  export interface MotionProps extends Omit<React.HTMLAttributes<HTMLElement>, 'style'> {
+    style?: React.CSSProperties & {
+      [key: string]: string | number | MotionValue<number> | MotionValue<string> | undefined;
+    };
     initial?: boolean | Target | VariantLabels;
     animate?: AnimationControls | TargetAndTransition | VariantLabels | boolean;
     exit?: TargetAndTransition | VariantLabels;
     variants?: Variants;
     transition?: Transition;
-    style?: React.CSSProperties;
     children?: React.ReactNode | MotionValue<number> | MotionValue<string> | MotionValue<any>;
     layout?: boolean | 'position' | 'size' | 'preserve-aspect';
     layoutId?: string;
@@ -21,7 +63,7 @@ declare module 'framer-motion' {
 
   export interface HTMLMotionProps<TagName extends keyof React.JSX.IntrinsicElements>
     extends MotionProps,
-      React.HTMLAttributes<HTMLElement> {
+      Omit<React.HTMLAttributes<HTMLElement>, keyof MotionProps> {
     [key: string]: any;
   }
 
@@ -33,11 +75,22 @@ declare module 'framer-motion' {
     [key: string]: any;
   }
 
-  export const motion: {
+  // Motion Component Types
+  type MotionHTMLElements = {
     [K in keyof React.JSX.IntrinsicElements]: React.ForwardRefExoticComponent<
-      React.PropsWithoutRef<React.JSX.IntrinsicElements[K]> & MotionProps & { [key: string]: any }
+      Omit<React.HTMLAttributes<HTMLElement>, 'style' | keyof MotionProps> & 
+      MotionProps & {
+        style?: React.CSSProperties & {
+          [key: string]: string | number | MotionValue<number> | MotionValue<string> | undefined;
+        } & {
+          [key: string]: any;
+        };
+        [key: string]: any;
+      }
     >;
-  } & {
+  };
+
+  export const motion: MotionHTMLElements & {
     [key: string]: any;
   };
 
@@ -50,13 +103,25 @@ declare module 'framer-motion' {
     presenceAffectsLayout?: boolean;
   }>;
 
+  // Hooks
+  export function useScroll(options?: ScrollOptions): {
+    scrollX: MotionValue<number>;
+    scrollY: MotionValue<number>;
+    scrollXProgress: MotionValue<number>;
+    scrollYProgress: MotionValue<number>;
+  };
+
+  export function useSpring(
+    value: MotionValue<number>,
+    config?: SpringOptions
+  ): MotionValue<number>;
+
+  export function useInView(
+    ref: React.RefObject<HTMLElement>,
+    options?: ViewportOptions
+  ): boolean;
+
   export const motionValue: <T>(value: T) => MotionValue<T>;
-  
-  export interface MotionValue<T> {
-    get(): T;
-    set(value: T, render?: boolean): void;
-    onChange(subscription: (value: T) => void): () => void;
-  }
 
   
   export interface AnimationControls {

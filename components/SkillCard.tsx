@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useTransform } from 'framer-motion';
+import { motion, useTransform, MotionValue } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 interface SkillCardProps {
@@ -29,7 +29,7 @@ export function SkillCard({ skill, index, scrollYProgress }: SkillCardProps) {
       className={`relative overflow-hidden rounded-2xl p-6 h-full ${skill.bgColor} shadow-xl`}
       style={{
         y: useTransform(scrollYProgress, [0, 1], [index * 20, index * -20]),
-        opacity: useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.9, 1]),
+        opacity: useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.9, 1])
       }}
     >
       <div className="relative z-10 h-full flex flex-col">
@@ -41,7 +41,7 @@ export function SkillCard({ skill, index, scrollYProgress }: SkillCardProps) {
             <motion.div
               className={`text-lg font-bold mb-1 bg-gradient-to-r ${skill.color} bg-clip-text text-transparent`}
               style={{
-                translateX: useTransform(scrollYProgress, [0, 0.5, 1], [0, 10 * offsetMultiplier, 0]),
+                x: useTransform(scrollYProgress, [0, 0.5, 1], [0, 10 * offsetMultiplier, 0])
               }}
             >
               {skill.category}
@@ -49,7 +49,7 @@ export function SkillCard({ skill, index, scrollYProgress }: SkillCardProps) {
             <motion.h3
               className="text-2xl font-bold mb-2 text-white"
               style={{
-                translateX: useTransform(scrollYProgress, [0, 0.5, 1], [0, 5 * offsetMultiplier, 0]),
+                x: useTransform(scrollYProgress, [0, 0.5, 1], [0, 5 * offsetMultiplier, 0])
               }}
             >
               {skill.name}
@@ -60,8 +60,8 @@ export function SkillCard({ skill, index, scrollYProgress }: SkillCardProps) {
         <motion.p
           className="text-white/80 mb-6 flex-grow"
           style={{
-            translateY: useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 0]),
-            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 1]),
+            y: useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 0]),
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 1])
           }}
         >
           {skill.description}
@@ -80,7 +80,7 @@ export function SkillCard({ skill, index, scrollYProgress }: SkillCardProps) {
           className="absolute bottom-0 right-0 w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm"
           style={{
             scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]),
-            rotate: useTransform(scrollYProgress, [0, 1], [0, 45]),
+            rotate: useTransform(scrollYProgress, [0, 1], [0, 45])
           }}
         />
       </div>
