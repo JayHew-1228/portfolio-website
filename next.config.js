@@ -3,21 +3,18 @@ const path = require('path');
 
 const isProd = process.env.NODE_ENV === 'production';
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Use static export for Vercel
+  // Enable static export
   output: 'export',
-  distDir: 'out',
   
-  // Base paths
-  basePath: isProd ? '' : '',
-  assetPrefix: isProd ? '' : '',
+  // Base paths - empty for root domain
+  basePath: '',
+  assetPrefix: '',
   
   // Image optimization
   images: {
-    loader: 'imgix',
-    path: '',
-    unoptimized: true,
-    domains: ['images.unsplash.com'],
+    unoptimized: true, // Required for static export
   },
   
   // TypeScript and ESLint config
@@ -47,7 +44,7 @@ const nextConfig = {
   // Add trailing slash for static export
   trailingSlash: true,
   
-  // Enable source maps in development
+  // Disable source maps in production
   productionBrowserSourceMaps: false,
 };
 
