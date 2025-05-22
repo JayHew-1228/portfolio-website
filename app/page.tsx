@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 const m = motion; // Alias for motion
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import {
   ExternalLink,
   Menu,
@@ -19,11 +19,11 @@ import {
   ChevronRight,
   ArrowRight,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 
 // Import components
-import SkillsSection from '@/components/SkillsSection';
-import { SkillCard } from '@/components/SkillCard';
+import SkillsSection from '../components/SkillsSection';
+import { SkillCard } from '../components/SkillCard';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home")
