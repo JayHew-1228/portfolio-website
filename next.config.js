@@ -5,11 +5,9 @@ const nextConfig = {
   // Use static export for Vercel
   output: 'export',
   
-  // Base path for GitHub Pages
-  basePath: process.env.NODE_ENV === 'production' ? '/portfolio-website' : '',
-  
-  // Asset prefix for CDN
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/portfolio-website/' : '',
+  // Disable basePath and assetPrefix for root domain
+  basePath: '',
+  assetPrefix: '',
   
   // Image optimization
   images: {
@@ -40,6 +38,12 @@ const nextConfig = {
   
   // Disable powered by header
   poweredByHeader: false,
+  
+  // Add trailing slash for static export
+  trailingSlash: true,
+  
+  // Enable source maps in development
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;
